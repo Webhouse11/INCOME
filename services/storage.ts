@@ -1,6 +1,5 @@
-
-import { CMSData } from '../types';
-import { INITIAL_DATA } from '../constants';
+import { CMSData } from '../types.ts';
+import { INITIAL_DATA } from '../constants.ts';
 
 const STORAGE_KEY = 'incomelab_cms_data_v1'; // Versioned key to prevent conflicts
 

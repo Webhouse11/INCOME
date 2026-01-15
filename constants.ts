@@ -1,5 +1,4 @@
-
-import { CMSData, CategoryType } from './types';
+import { CMSData, CategoryType } from './types.ts';
 
 export const INITIAL_DATA: CMSData = {
   articles: [

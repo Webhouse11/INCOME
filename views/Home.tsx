@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCMSData } from '../services/storage';
+import { getCMSData } from '../services/storage.ts';
 import { CheckCircle, ArrowRight, Zap, Target, ShieldCheck, Star, ShoppingBag } from 'lucide-react';
 
 const PurchaseNotification: React.FC = () => {
@@ -97,7 +96,6 @@ export const Home: React.FC = () => {
       
       <PurchaseNotification />
       
-      {/* Hero */}
       <section className="relative pt-20 pb-12 overflow-hidden bg-gradient-to-b from-blue-50/50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold bg-blue-100 text-blue-700 mb-6">
@@ -120,7 +118,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Articles Section */}
       <section className="bg-gray-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
@@ -152,7 +149,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Products Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">Premium Blueprints</h2>
@@ -184,7 +180,6 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
           <h2 className="text-3xl font-extrabold text-gray-900">Trusted by Builders Worldwide</h2>

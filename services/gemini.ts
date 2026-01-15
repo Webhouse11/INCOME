@@ -1,6 +1,5 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
-import { CMSData, AIRecommendation } from '../types';
+import { CMSData, AIRecommendation } from '../types.ts';
 
 export interface GroundedTrend {
   title: string;
@@ -93,9 +92,6 @@ export const fetchLiveTrends = async (category: string): Promise<GroundedTrend[]
       uri: chunk.web?.uri || '#'
     })).filter(s => s.uri !== '#');
 
-    // Since we can't force JSON with googleSearch tool, we'll do a simple parsing 
-    // or just return the grounded text with sources.
-    // We will simulate a structured response for the UI.
     const trends: GroundedTrend[] = [
       {
         title: `Live ${category} Insight`,

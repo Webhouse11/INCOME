@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Search, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
-import { getAIRecommendations } from '../services/gemini';
-import { getCMSData } from '../services/storage';
-import { AIRecommendation } from '../types';
+import { getAIRecommendations } from '../services/gemini.ts';
+import { getCMSData } from '../services/storage.ts';
+import { AIRecommendation } from '../types.ts';
 import { Link } from 'react-router-dom';
 
 export const AISearch: React.FC = () => {

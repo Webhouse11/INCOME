@@ -1,7 +1,6 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { getCMSData, saveCMSData, clearAllData } from '../services/storage';
-import { CategoryType, Article, Product } from '../types';
+import { getCMSData, saveCMSData, clearAllData } from '../services/storage.ts';
+import { CategoryType, Article, Product } from '../types.ts';
 import { LayoutDashboard, FileText, ShoppingBag, Settings, Plus, Trash2, Edit2, BarChart, X, Upload, Image as ImageIcon, Link as LinkIcon, RefreshCw, CheckCircle2 } from 'lucide-react';
 
 export const AdminDashboard: React.FC = () => {
@@ -17,7 +16,6 @@ export const AdminDashboard: React.FC = () => {
   const articleFileRef = useRef<HTMLInputElement>(null);
   const productFileRef = useRef<HTMLInputElement>(null);
 
-  // Form States
   const [newArticle, setNewArticle] = useState<Partial<Article>>({
     title: '', slug: '', excerpt: '', content: '', category: CategoryType.BUSINESS,
     image: '', author: 'Admin', featured: false
@@ -28,10 +26,6 @@ export const AdminDashboard: React.FC = () => {
     type: 'Guide', image: '', features: [], targetAudience: '', problemSolved: '', downloadUrl: ''
   });
 
-  const refreshLocalData = () => {
-    setData(getCMSData());
-  };
-
   const showSaveSuccess = () => {
     setSaveStatus('saved');
     setTimeout(() => setSaveStatus('idle'), 3000);
@@ -40,7 +34,7 @@ export const AdminDashboard: React.FC = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'article' | 'product') => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 1024 * 1024) { // 1MB Limit for safety in LocalStorage
+      if (file.size > 1024 * 1024) { // 1MB Limit for LocalStorage safety
         alert("Image too large. Please use an image under 1MB for best performance.");
         return;
       }
@@ -165,7 +159,7 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const totalRevenue = data.products.reduce((acc, p) => acc + (p.price * 2), 0); // Mocking some sales
+  const totalRevenue = data.products.reduce((acc, p) => acc + (p.price * 2), 0); 
 
   const stats = [
     { label: 'Total Articles', value: data.articles.length, icon: FileText, color: 'text-blue-600' },
@@ -175,7 +169,6 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
-      {/* Global Status Bar */}
       {saveStatus !== 'idle' && (
         <div className={`fixed top-20 right-8 z-[100] flex items-center px-4 py-2 rounded-full shadow-lg border transition-all ${
           saveStatus === 'saving' ? 'bg-white border-blue-100 text-blue-600' : 'bg-green-600 border-green-700 text-white'
@@ -189,7 +182,6 @@ export const AdminDashboard: React.FC = () => {
       )}
 
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Sidebar */}
         <div className="w-full md:w-64 flex-shrink-0">
           <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
             <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 px-4">Menu</h2>
@@ -223,7 +215,6 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Content */}
         <div className="flex-grow">
           {activeTab === 'overview' && (
             <div className="space-y-8 animate-in fade-in duration-500">
@@ -360,7 +351,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Article Modal */}
       {isArticleModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 animate-in zoom-in-95 duration-200">
@@ -430,7 +420,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Product Modal */}
       {isProductModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 animate-in zoom-in-95 duration-200">

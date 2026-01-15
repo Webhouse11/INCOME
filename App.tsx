@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useParams, Link, useLocation } from 'react-router-dom';
-import { Header } from './components/Header';
-import { Home } from './views/Home';
-import { AdminDashboard } from './views/AdminDashboard';
-import { getCMSData } from './services/storage';
-import { fetchLiveTrends, GroundedTrend } from './services/gemini';
+import { Header } from './components/Header.tsx';
+import { Home } from './views/Home.tsx';
+import { AdminDashboard } from './views/AdminDashboard.tsx';
+import { getCMSData } from './services/storage.ts';
+import { fetchLiveTrends, GroundedTrend } from './services/gemini.ts';
 import { 
   Download, 
   ShoppingCart, 
@@ -32,7 +31,7 @@ import {
   Youtube,
   ExternalLink
 } from 'lucide-react';
-import { Article, Product, CategoryType } from './types';
+import { Article, Product, CategoryType } from './types.ts';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -41,8 +40,6 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
-
-// ... (ArticleDetailView and ProductDetailView remain same)
 
 const ArticleDetailView = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -128,7 +125,6 @@ const ProductDetailView = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero Sales Section */}
       <section className="relative bg-gray-900 text-white pt-24 pb-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500 via-transparent to-transparent"></div>
@@ -164,7 +160,6 @@ const ProductDetailView = () => {
         </div>
       </section>
 
-      {/* Trust Bar */}
       <div className="bg-gray-50 border-y border-gray-100 py-8">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex items-center justify-center md:justify-start">
@@ -191,7 +186,6 @@ const ProductDetailView = () => {
         </div>
       </div>
 
-      {/* Curriculum / Modules */}
       {product.modules && (
         <section className="py-24 bg-white">
           <div className="max-w-4xl mx-auto px-4">
@@ -223,7 +217,6 @@ const ProductDetailView = () => {
         </section>
       )}
 
-      {/* Bonus Section */}
       {product.bonuses && (
         <section className="py-24 bg-blue-50">
           <div className="max-w-5xl mx-auto px-4">
@@ -251,7 +244,6 @@ const ProductDetailView = () => {
         </section>
       )}
 
-      {/* FAQ Section */}
       {product.faqs && (
         <section className="py-24 bg-white">
           <div className="max-w-3xl mx-auto px-4">
@@ -278,7 +270,6 @@ const ProductDetailView = () => {
         </section>
       )}
 
-      {/* Floating CTA for Mobile / Desktop Bottom */}
       <div className="sticky bottom-0 bg-white/80 backdrop-blur-lg border-t border-gray-100 py-6 px-4 z-50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="hidden sm:block">
@@ -378,7 +369,6 @@ const MarketplaceView = () => {
         ))}
       </div>
 
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="mt-20 flex flex-col items-center space-y-4">
           <div className="flex items-center space-x-2">
@@ -450,7 +440,6 @@ const BlogView = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
         <h1 className="text-5xl font-extrabold text-gray-900">Knowledge Hub</h1>
         
-        {/* Live Research Tool */}
         <div className="w-full md:max-w-md bg-gray-900 rounded-[2rem] p-6 text-white shadow-2xl">
           <div className="flex items-center space-x-2 mb-4">
             <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
@@ -478,7 +467,6 @@ const BlogView = () => {
         </div>
       </div>
 
-      {/* Live Trends Display */}
       {trends.length > 0 && (
         <section className="mb-20 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="bg-blue-50 border-2 border-blue-100 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
@@ -528,8 +516,6 @@ const BlogView = () => {
     </div>
   );
 };
-
-// ... (Rest of Footer and App remain same)
 
 const Footer = () => (
   <footer className="bg-gray-900 text-white py-24">
