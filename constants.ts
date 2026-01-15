@@ -2,119 +2,39 @@ import { CMSData, CategoryType } from './types.ts';
 
 export const INITIAL_DATA: CMSData = {
   articles: [
-    // --- BUSINESS SECTION ---
+    // --- TECH SECTION (7 ARTICLES) ---
     {
       id: 'a1',
-      title: 'How to Start a Small Business With Little Capital and Grow It Fast',
-      slug: 'start-small-business-little-capital',
-      excerpt: 'The secret to scaling isn\'t starting big, but starting lean and moving fast.',
-      content: 'Starting a business with limited capital requires a shift from asset-heavy models to service-oriented ones. By focusing on high-demand skills or low-inventory models like dropshipping or micro-retailing, you can validate your idea without financial risk. The key to fast growth is immediate reinvestment of every kobo of profit back into marketing and customer acquisition systems that work.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString(),
-      featured: true
-    },
-    {
-      id: 'a2',
-      title: 'How to Find Profitable Business Ideas People Are Paying For',
-      slug: 'find-profitable-business-ideas',
-      excerpt: 'Stop guessing and start solving problems that already have budgets attached to them.',
-      content: 'Profitable business ideas are hidden in plain sight—usually in the form of common frustrations. To identify them, look for processes that are slow, expensive, or outdated in your local market or online community. Use keyword research tools and social listening to see where people are complaining; if there is a recurring complaint, there is a profit opportunity for the person who builds a better solution.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1454165833767-027eeef1593e?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a3',
-      title: 'How to Start a Side Hustle While Working a Full-Time Job',
-      slug: 'start-side-hustle-full-time-job',
-      excerpt: 'Balance your 9-to-5 with a 6-to-10 that eventually sets you free.',
-      content: 'Managing a side hustle alongside a career is a test of discipline and automation. The strategy is to choose a business model that doesn\'t require real-time presence, such as digital products or automated service agencies. By dedicating just 2 hours every evening and 5 hours on weekends, you can build a system that generates revenue while you focus on your primary job, creating a safety net for future transition.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a4',
-      title: 'How to Start a Business From Home and Earn Consistently',
-      slug: 'start-business-from-home-consistently',
-      excerpt: 'Your living room is the new corporate headquarters of the 21st century.',
-      content: 'Consistently earning from home requires a professional routine that mimics an office environment. Focus on high-value remote services like consulting, tech support, or digital design where the overhead is zero but the billable hours are high. Use professional project management tools to stay organized and ensure you have a dedicated workspace that allows you to separate your personal life from your business growth.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a5',
-      title: 'How to Start a Profitable Business Without Quitting Your Job',
-      slug: 'profitable-business-without-quitting',
-      excerpt: 'Leverage your salary to fund your dream until the dream pays more than the salary.',
-      content: 'The "Safety-First" entrepreneurship model involves using your steady paycheck as your first angel investor. Instead of taking on debt, use your monthly savings to pay for software, freelancers, and small ad tests. This approach allows you to iterate and fail safely until you find a "Winning Product" that generates enough consistent cashflow to replace your salary 2x over before you even think about resigning.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a6',
-      title: 'How to Turn Business Ideas Into Real Income',
-      slug: 'turn-business-ideas-real-income',
-      excerpt: 'Ideas are worthless without an execution framework that leads to a sale.',
-      content: 'Turning an idea into income requires moving from the "Concept Phase" to the "Transaction Phase" as fast as possible. Create a Minimum Viable Product (MVP) or a simple landing page and ask people to pay for it before you spend months building. Real income starts with a single transaction; once you have one person willing to part with money for your value, you have a business—everything else is just scaling that one success.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a7',
-      title: 'How to Start a Consulting Business Even If You’re Not an Expert',
-      slug: 'start-consulting-not-expert',
-      excerpt: 'You only need to be two steps ahead of your client to provide massive value.',
-      content: 'Consulting is about results, not credentials. If you have solved a specific problem for yourself or a previous employer, you are already an "Expert" to someone who is still struggling with that same problem. By focusing on a specific niche—like helping small shops set up Instagram ads or teaching seniors how to use AI tools—you can provide immediate value and charge professional fees based on the time and money you save your clients.',
-      category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Expert',
-      createdAt: new Date().toISOString()
-    },
-
-    // --- TECH SECTION ---
-    {
-      id: 'a8',
       title: 'How to Make Money Online in Nigeria Without Scams (Practical Guide)',
       slug: 'make-money-online-nigeria-no-scams',
       excerpt: 'Filter the noise and focus on verified, high-yield digital skills.',
       content: 'Legitimate online income in Nigeria is built on the exchange of global value. Avoid any platform that asks for "Referral Fees" or promises returns without work. Instead, focus on freelancing, remote tech support, content creation, or digital asset trading. By using verified platforms like Upwork or Selar and focusing on earning in foreign currency, you can bypass local economic hurdles and build a sustainable, scam-free career from your laptop.',
       category: CategoryType.TECH,
       image: 'https://images.unsplash.com/photo-1542601906960-da0eddd7e93e?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Tech Editor',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString(),
       featured: true
     },
     {
-      id: 'a9',
+      id: 'a3',
       title: 'How to Turn Your Skills Into a Profitable Online Business',
       slug: 'turn-skills-profitable-online-business',
       excerpt: 'Your existing knowledge is your most valuable digital currency.',
       content: 'Every professional skill—from accounting to graphic design—has an online market. The transformation starts by packaging your skill as a "Productized Service" or an "Info-Product." By creating a clear offer with a fixed price and an automated delivery system, you move from being a "Hired Hand" to a "Business Owner." This allows you to scale beyond your own hours by hiring others to execute your proven methodology.',
       category: CategoryType.TECH,
       image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Tech Editor',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
-      id: 'a10',
+      id: 'a8',
       title: 'How to Make Money Using AI Tools Without Technical Skills',
       slug: 'make-money-ai-no-tech-skills',
       excerpt: 'Prompting is the new coding. Learn to command the machines for profit.',
       content: 'You don\'t need to know Python to profit from the AI revolution. Modern Generative AI tools allow you to fulfill complex client requests—like professional copywriting, logo design, or video editing—in a fraction of the time. The business model is simple: Sell the "Final Output" to clients who lack the time or the curiosity to learn the AI tools themselves. You act as the expert operator, delivering high-quality work at speed.',
       category: CategoryType.TECH,
       image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Tech Editor',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
@@ -125,87 +45,167 @@ export const INITIAL_DATA: CMSData = {
       content: 'A laptop-based business is the pinnacle of modern freedom. Whether it\'s managing an e-commerce store, running a SaaS platform, or building a high-traffic niche blog, the requirements are the same: a reliable connection and a high-value offer. By targeting international markets where your local cost of living is a competitive advantage, you can build a highly profitable venture that doesn\'t depend on your local economy.',
       category: CategoryType.TECH,
       image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Tech Editor',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
-      id: 'a12',
+      id: 'a13',
       title: 'How to Start Freelancing With No Experience and Get Paid',
       slug: 'start-freelancing-no-experience',
       excerpt: 'Your first client is waiting for your potential, not your history.',
       content: 'Winning your first freelance gig without a portfolio requires the "Demonstration Strategy." Instead of a CV, send a customized sample of the work you would do for the client for free. This eliminates their risk and proves your ability. Once you have your first 3 "Yes" responses, you have a portfolio. From there, it is a matter of optimizing your profile and increasing your rates as your social proof grows.',
       category: CategoryType.TECH,
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Tech Editor',
+      image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a14',
+      title: 'How to Sell Digital Products Online Step by Step',
+      slug: 'sell-digital-products-step-by-step',
+      excerpt: 'From creation to first sale: The definitive digital merchant roadmap.',
+      content: 'The 4-step path to digital sales: 1. Identify a "Burning Problem" in a niche you understand. 2. Create a "Micro-Asset" (PDF, Template, or Audio) that solves it. 3. Set up a storefront on a platform that handles payments for you. 4. Use short-form video (TikTok/Reels) to show the transformation your product provides. Digital products have 100% margins, making them the most efficient path to wealth.',
+      category: CategoryType.TECH,
+      image: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a16',
+      title: 'How to Build an Online Income That Is Not Dependent on One Source',
+      slug: 'independent-online-income-diversity',
+      excerpt: 'Learn the "Hydra Model" of digital revenue for absolute security.',
+      content: 'Relying on one platform (like YouTube or Amazon) is a business risk. To build an independent income, you must own your "Traffic and Sales" system. This means building an email list and having products on your own domain. By diversifying your traffic sources and having multiple offers at different price points, you ensure that no algorithm change or platform ban can destroy your livelihood.',
+      category: CategoryType.TECH,
+      image: 'https://images.unsplash.com/photo-1512428559083-560dfc18b20e?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
 
-    // --- DIGITAL ASSETS SECTION ---
+    // --- BUSINESS SECTION (7 ARTICLES) ---
     {
-      id: 'a13',
+      id: 'a2',
+      title: 'How to Start a Small Business With Little Capital and Grow It Fast',
+      slug: 'start-small-business-little-capital',
+      excerpt: 'The secret to scaling isn\'t starting big, but starting lean and moving fast.',
+      content: 'Starting a business with limited capital requires a shift from asset-heavy models to service-oriented ones. By focusing on high-demand skills or low-inventory models like dropshipping or micro-retailing, you can validate your idea without financial risk. The key to fast growth is immediate reinvestment of every kobo of profit back into marketing and customer acquisition systems that work.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString(),
+      featured: true
+    },
+    {
+      id: 'a6',
+      title: 'How to Find Profitable Business Ideas People Are Paying For',
+      slug: 'find-profitable-business-ideas',
+      excerpt: 'Stop guessing and start solving problems that already have budgets attached to them.',
+      content: 'Profitable business ideas are hidden in plain sight—usually in the form of common frustrations. To identify them, look for processes that are slow, expensive, or outdated in your local market or online community. Use keyword research tools and social listening to see where people are complaining; if there is a recurring complaint, there is a profit opportunity for the person who builds a better solution.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1454165833767-027eeef1593e?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a7',
+      title: 'How to Start a Side Hustle While Working a Full-Time Job',
+      slug: 'start-side-hustle-full-time-job',
+      excerpt: 'Balance your 9-to-5 with a 6-to-10 that eventually sets you free.',
+      content: 'Managing a side hustle alongside a career is a test of discipline and automation. The strategy is to choose a business model that doesn\'t require real-time presence, such as digital products or automated service agencies. By dedicating just 2 hours every evening and 5 hours on weekends, you can build a system that generates revenue while you focus on your primary job, creating a safety net for future transition.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a9',
+      title: 'How to Start a Business From Home and Earn Consistently',
+      slug: 'start-business-from-home-consistently',
+      excerpt: 'Your living room is the new corporate headquarters of the 21st century.',
+      content: 'Consistently earning from home requires a professional routine that mimics an office environment. Focus on high-value remote services like consulting, tech support, or digital design where the overhead is zero but the billable hours are high. Use professional project management tools to stay organized and ensure you have a dedicated workspace that allows you to separate your personal life from your business growth.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a15',
+      title: 'How to Start a Consulting Business Even If You’re Not an Expert',
+      slug: 'start-consulting-not-expert',
+      excerpt: 'You only need to be two steps ahead of your client to provide massive value.',
+      content: 'Consulting is about results, not credentials. If you have solved a specific problem for yourself or a previous employer, you are already an "Expert" to someone who is still struggling with that same problem. By focusing on a specific niche—like helping small shops set up Instagram ads or teaching seniors how to use AI tools—you can provide immediate value and charge professional fees based on the time and money you save your clients.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a17',
+      title: 'How to Start a Profitable Business Without Quitting Your Job',
+      slug: 'profitable-business-without-quitting',
+      excerpt: 'Leverage your salary to fund your dream until the dream pays more than the salary.',
+      content: 'The "Safety-First" entrepreneurship model involves using your steady paycheck as your first angel investor. Instead of taking on debt, use your monthly savings to pay for software, freelancers, and small ad tests. This approach allows you to iterate and fail safely until you find a "Winning Product" that generates enough consistent cashflow to replace your salary 2x over before you even think about resigning.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 'a18',
+      title: 'How to Turn Business Ideas Into Real Income',
+      slug: 'turn-business-ideas-real-income',
+      excerpt: 'Ideas are worthless without an execution framework that leads to a sale.',
+      content: 'Turning an idea into income requires moving from the "Concept Phase" to the "Transaction Phase" as fast as possible. Create a Minimum Viable Product (MVP) or a simple landing page and ask people to pay for it before you spend months building. Real income starts with a single transaction; once you have one person willing to part with money for your value, you have a business—everything else is just scaling that one success.',
+      category: CategoryType.BUSINESS,
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
+      createdAt: new Date().toISOString()
+    },
+
+    // --- DIGITAL ASSETS SECTION (6 ARTICLES) ---
+    {
+      id: 'a4',
       title: 'How to Build Multiple Streams of Income as a Beginner',
       slug: 'multiple-streams-income-beginner',
       excerpt: 'Don\'t put all your financial eggs in one basket. Learn to diversify.',
       content: 'Building multiple streams is about layering different income types: Active (Service), Portfolio (Dividends), and Passive (Digital Assets). A beginner should start with one active stream to build capital, then immediately funnel that capital into assets that don\'t require time—like affiliate sites, stock market index funds, or automated digital product stores. This "Income Layering" ensures that if one source dries up, your lifestyle is protected by the others.',
       category: CategoryType.DIGITAL_ASSETS,
       image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString(),
       featured: true
     },
     {
-      id: 'a14',
+      id: 'a5',
       title: 'How to Start an Online Business That Actually Works in 2026',
       slug: 'online-business-2026-strategy',
       excerpt: 'The digital landscape is changing. Here is how to stay ahead of the curve.',
       content: 'In 2026, successful online businesses are those that integrate AI agents and focus on "Deep Personalization." Generic content and basic dropshipping are dead. To win now, you must build a "Community-First" brand where you own the relationship with your audience via email or private forums. High-value digital assets and specialized SaaS tools are the highest-margin models for the next decade.',
       category: CategoryType.DIGITAL_ASSETS,
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
-      id: 'a15',
+      id: 'a10',
       title: 'How to Monetize Knowledge and Experience in Simple Ways',
       slug: 'monetize-knowledge-experience',
       excerpt: 'What you know is worth more than what you do. Start selling insights.',
       content: 'Knowledge monetization is about transformation. Don\'t sell "How-To" information; sell the "Outcome." Whether it\'s a 10-page guide on how to pass a specific exam or a video course on gardening, people are paying for the shortcut. Use platforms like Selar, Gumroad, or Substack to package your unique insights into paid subscriptions or one-time downloads that provide instant value to a specific niche.',
       category: CategoryType.DIGITAL_ASSETS,
       image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
-      id: 'a16',
+      id: 'a12',
       title: 'How to Build a Business That Generates Passive Income Over Time',
       slug: 'build-passive-income-business',
       excerpt: 'Front-load the work to enjoy back-end freedom for years to come.',
       content: 'True passive income requires a "System-First" architecture. This means building a business where the product delivery and the marketing are both automated. Content-rich websites that earn through ads or affiliate links, or software-as-a-service (SaaS) products, are the gold standard. It takes significant effort to build the machine, but once it\'s running, your primary role shifts from "Worker" to "Maintenance Engineer."',
       category: CategoryType.DIGITAL_ASSETS,
-      image: 'https://images.unsplash.com/photo-1518433278981-11271f4a7c24?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a17',
-      title: 'How to Sell Digital Products Online Step by Step',
-      slug: 'sell-digital-products-step-by-step',
-      excerpt: 'From creation to first sale: The definitive digital merchant roadmap.',
-      content: 'The 4-step path to digital sales: 1. Identify a "Burning Problem" in a niche you understand. 2. Create a "Micro-Asset" (PDF, Template, or Audio) that solves it. 3. Set up a storefront on a platform that handles payments for you. 4. Use short-form video (TikTok/Reels) to show the transformation your product provides. Digital products have 100% margins, making them the most efficient path to wealth.',
-      category: CategoryType.DIGITAL_ASSETS,
-      image: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
-      createdAt: new Date().toISOString()
-    },
-    {
-      id: 'a18',
-      title: 'How to Build an Online Income That Is Not Dependent on One Source',
-      slug: 'independent-online-income-diversity',
-      excerpt: 'Learn the "Hydra Model" of digital revenue for absolute security.',
-      content: 'Relying on one platform (like YouTube or Amazon) is a business risk. To build an independent income, you must own your "Traffic and Sales" system. This means building an email list and having products on your own domain. By diversifying your traffic sources and having multiple offers at different price points, you ensure that no algorithm change or platform ban can destroy your livelihood.',
-      category: CategoryType.DIGITAL_ASSETS,
-      image: 'https://images.unsplash.com/photo-1512428559083-560dfc18b20e?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      image: 'https://images.unsplash.com/photo-1518433278981-11271f4a7c22?auto=format&fit=crop&q=80&w=800',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
@@ -216,7 +216,7 @@ export const INITIAL_DATA: CMSData = {
       content: 'Saturation is a myth for those who are early. To spot opportunities, watch the "Tech Pioneers"—look at what new APIs (like OpenAI) or new platforms (like Apple Vision Pro) are enabling. The first people to build simple tools or services on new platforms always win the biggest share. Stay active in developer forums and early-adopter communities to see where the smart money is moving before it hits the mainstream news.',
       category: CategoryType.DIGITAL_ASSETS,
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     },
     {
@@ -227,12 +227,12 @@ export const INITIAL_DATA: CMSData = {
       content: 'Long-term income is about building "Compound Interests." Instead of jumping from one trend to another, pick a vertical and build a moat. A "Moat" can be a deep brand, a proprietary dataset, or a massive email list. By consistently adding value to the same audience for 5-10 years, you build an asset that grows in value and produces predictable income, regardless of short-term market fluctuations.',
       category: CategoryType.DIGITAL_ASSETS,
       image: 'https://images.unsplash.com/photo-1611974714851-48d1c793139d?auto=format&fit=crop&q=80&w=800',
-      author: 'IncomeLab Asset Manager',
+      author: 'IncomeLab Editorial',
       createdAt: new Date().toISOString()
     }
   ],
   products: [
-    // --- ORIGINAL 20 PRODUCTS ---
+    // --- 30 PREMIUM PRODUCTS ---
     {
       id: 'p1',
       name: 'AI Tool Arbitrage Masterclass',
@@ -497,7 +497,7 @@ export const INITIAL_DATA: CMSData = {
       price: 25000,
       currency: 'NGN',
       category: CategoryType.BUSINESS,
-      image: 'https://images.unsplash.com/photo-1518433278981-11271f4a7c22?auto=format&fit=crop&q=80&w=600',
+      image: 'https://images.unsplash.com/photo-1518433278981-11271f4a7c24?auto=format&fit=crop&q=80&w=600',
       type: 'Blueprint',
       features: ['Affiliate Automation', 'Digital Asset Flipping', 'Evergreen Funnels'],
       targetAudience: 'Professionals & Builders',
@@ -553,8 +553,6 @@ export const INITIAL_DATA: CMSData = {
       fullSalesCopy: 'Selling services is the fastest way to 6-figures, but only if you scale. This toolkit shows you how to "Arbitrage" talent—hiring experts to do the work while you focus on high-level sales and strategy. Learn how to package services like SEO, Web Dev, and Ads into monthly retainers of $1k - $5k per client.',
       downloadUrl: '#'
     },
-
-    // --- NEW 10 PRODUCTS (p21 - p30) ---
     {
       id: 'p21',
       name: 'Cocoa Export Mastery: Nigeria Edition',
@@ -568,7 +566,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Buyer Acquisition Secrets', 'NEPC Documentation', 'Quality Control Labelling'],
       targetAudience: 'Export Entrepreneurs',
       problemSolved: 'Complex regulatory hurdles and lack of access to foreign buyers.',
-      fullSalesCopy: 'Nigeria is the 4th largest cocoa producer globally, yet most locals are locked out of the export market. This blueprint provides the exact roadmap to acquiring your export license, sourcing premium beans from local farmers, and securing multi-ton contracts with buyers in Europe and North America. Stop trading in local currency and start earning the global standard.',
+      fullSalesCopy: 'Nigeria is the 4th largest cocoa producer globally, yet most locals are locked out of the export market. This blueprint provides the exact roadmap to acquiring your export license, sourcing premium beans from local farmers, and securing multi-ton contracts with buyers in Europe and North America.',
       downloadUrl: '#'
     },
     {
@@ -584,7 +582,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Omonile Safety Guide', 'Property Wholesaling', 'Lagos Market Hotspots'],
       targetAudience: 'New Real Estate Agents',
       problemSolved: 'Fear of property scams and the massive capital needed for land banking.',
-      fullSalesCopy: 'Lagos real estate appreciates faster than any other asset class in Africa. This guide teaches you how to enter the market with zero capital as a "Property Wholesaler." Learn the legal tricks to ensure land is genuine, how to build a network of high-net-worth buyers, and how to command 5-10% commissions on multimillion-Naira transactions.',
+      fullSalesCopy: 'Lagos real estate appreciates faster than any other asset class in Africa. This guide teaches you how to enter the market with zero capital as a "Property Wholesaler." Learn the legal tricks to ensure land is genuine and how to command 5-10% commissions.',
       downloadUrl: '#'
     },
     {
@@ -600,7 +598,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Voice Matching Skills', 'CEO Cold-Outreach', 'Project Management'],
       targetAudience: 'Creative Writers',
       problemSolved: 'The income ceiling of content writing platforms like Fiverr/Upwork.',
-      fullSalesCopy: 'CEOs have the vision but no time to write. This ghostwriting toolkit shows you how to position yourself as a strategic voice partner. Learn how to write books, thought-leadership LinkedIn posts, and whitepapers for industry leaders. We show you the pricing models used by the top 1% of ghostwriters to earn executive-level income.',
+      fullSalesCopy: 'CEOs have the vision but no time to write. This ghostwriting toolkit shows you how to position yourself as a strategic voice partner. Learn the pricing models used by the top 1% of ghostwriters to earn executive-level income.',
       downloadUrl: '#'
     },
     {
@@ -616,7 +614,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Social Commerce Funnels', 'Vendor Sourcing', 'Brand Storytelling'],
       targetAudience: 'Lifestyle Entrepreneurs',
       problemSolved: 'High overhead costs of physical shops and unsold inventory waste.',
-      fullSalesCopy: 'E-commerce in Africa is exploding. This blueprint skips the "Rent and Stock" model and goes straight to "Direct-to-Consumer." Learn how to build a hype-driven brand on Instagram, how to source high-quality fabrics, and how to use pre-orders to fund your production so you never lose money on unsold clothing.',
+      fullSalesCopy: 'E-commerce in Africa is exploding. This blueprint skips the "Rent and Stock" model and goes straight to "Direct-to-Consumer." Learn how to use pre-orders to fund your production so you never lose money on unsold clothing.',
       downloadUrl: '#'
     },
     {
@@ -632,7 +630,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Shadow Work Strategy', 'Profile SEO', 'The First-Gig Script'],
       targetAudience: 'Students & Career Starters',
       problemSolved: 'The "Need experience for a job, need a job for experience" trap.',
-      fullSalesCopy: 'You don\'t need a CV; you need a Proof of Work. This roadmap teaches you how to build "Shadow Projects" that demonstrate your skill to international employers. We provide the exact scripts to use to win your first $50 - $100 contract within weeks, allowing you to build the momentum needed for a full-time remote career.',
+      fullSalesCopy: 'You don\'t need a CV; you need a Proof of Work. This roadmap teaches you how to build "Shadow Projects" that demonstrate your skill to international employers and win your first $100 contract within weeks.',
       downloadUrl: '#'
     },
     {
@@ -648,7 +646,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Hook Writing Science', 'Short-form Monetization', 'Brand Deal Kit'],
       targetAudience: 'Aspiring Influencers',
       problemSolved: 'Posting content for months with zero engagement or income.',
-      fullSalesCopy: 'Views are vanity; cashflow is sanity. This guide stops the "Posting and Praying" cycle. We teach you the science of viral hooks, how to retain audience attention, and 5 different ways to monetize your followers—from affiliate links to digital products—without needing a massive audience.',
+      fullSalesCopy: 'Views are vanity; cashflow is sanity. This guide stops the "Posting and Praying" cycle. We teach you the science of viral hooks and 5 different ways to monetize your followers without needing a massive audience.',
       downloadUrl: '#'
     },
     {
@@ -664,7 +662,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Curriculum Design', 'Selar/Gumroad Mastery', 'Sales Funnel Build'],
       targetAudience: 'Experts & Teachers',
       problemSolved: 'Trading time for money as a tutor or consultant.',
-      fullSalesCopy: 'The knowledge economy is a billion-dollar industry. This roadmap shows you how to identify a problem people will pay to solve, how to structure your lessons for high completion rates, and how to set up an automated sales funnel that brings in students 24/7. Turn your expertise into an evergreen income stream.',
+      fullSalesCopy: 'The knowledge economy is a billion-dollar industry. This roadmap shows you how to structure your lessons for high completion rates and set up an automated sales funnel that brings in students 24/7.',
       downloadUrl: '#'
     },
     {
@@ -680,7 +678,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['SEO for Affiliates', 'Click-through Mastery', 'Email Automation'],
       targetAudience: 'Side-Hustlers',
       problemSolved: 'Low-quality affiliate programs and zero traffic to sales links.',
-      fullSalesCopy: 'Affiliate marketing is not about spamming links. It is about building trust. This toolkit shows you how to select high-paying products (recurring commissions), how to build a bridge page that converts, and how to use free SEO and Social Media traffic to drive sales while you sleep.',
+      fullSalesCopy: 'Affiliate marketing is about building trust. This toolkit shows you how to select high-paying products and how to use free SEO and Social Media traffic to drive sales while you sleep.',
       downloadUrl: '#'
     },
     {
@@ -696,7 +694,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Canva Product Design', 'Automated Delivery', 'Global Pricing Strategy'],
       targetAudience: 'Digital Nomads',
       problemSolved: 'The technical complexity of setting up a digital storefront.',
-      fullSalesCopy: 'Sell once, profit forever. This toolkit removes the tech barrier. Learn how to create high-value digital assets in Canva or Notion, how to set up a storefront on Selar or Lemon Squeezy, and how to use Facebook Ads to scale a ₦1,000 product into a ₦1,000,000 monthly business.',
+      fullSalesCopy: 'Sell once, profit forever. This toolkit removes the tech barrier. Learn how to create high-value assets in Canva and scale a ₦1,000 product into a ₦1,000,000 monthly business.',
       downloadUrl: '#'
     },
     {
@@ -712,7 +710,7 @@ export const INITIAL_DATA: CMSData = {
       features: ['Financial Projection Sheets', 'SWOT Analysis Builder', 'Pitch Deck Template'],
       targetAudience: 'New Entrepreneurs',
       problemSolved: 'Difficulty formalizing business ideas and failing to secure funding.',
-      fullSalesCopy: 'Investors don\'t fund ideas; they fund plans. This toolkit provides a fill-in-the-blank structure for a professional business plan. Learn how to calculate your market size, project your cashflow for 3 years, and create a pitch deck that gets investors to take you seriously. Stop dreaming and start documenting.',
+      fullSalesCopy: 'Investors fund plans. This toolkit provides a fill-in-the-blank structure for a professional business plan. Learn how to calculate your market size and create a pitch deck that gets results.',
       downloadUrl: '#'
     }
   ],
