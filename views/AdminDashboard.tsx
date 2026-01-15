@@ -439,12 +439,15 @@ export const AdminDashboard: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Type</label>
+                  {/* Added Blueprint and Template options to match Product interface in types.ts */}
                   <select className="w-full px-4 py-2 border border-gray-200 rounded-xl bg-white" value={newProduct.type} onChange={e => setNewProduct({...newProduct, type: e.target.value as any})}>
                     <option value="Guide">Guide</option>
                     <option value="Course">Course</option>
                     <option value="Toolkit">Toolkit</option>
                     <option value="Roadmap">Roadmap</option>
                     <option value="Ebook">Ebook</option>
+                    <option value="Blueprint">Blueprint</option>
+                    <option value="Template">Template</option>
                   </select>
                 </div>
                 <div className="col-span-2">

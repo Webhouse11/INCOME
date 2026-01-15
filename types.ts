@@ -1,4 +1,5 @@
 
+
 export enum CategoryType {
   BUSINESS = 'Business',
   TECH = 'Tech',
@@ -40,7 +41,8 @@ export interface Product {
   currency: 'USD' | 'NGN';
   category: CategoryType;
   image: string;
-  type: 'Ebook' | 'Course' | 'Template' | 'Guide' | 'Toolkit' | 'Roadmap';
+  // Added 'Blueprint' to the valid product types to match constants.ts
+  type: 'Ebook' | 'Course' | 'Template' | 'Guide' | 'Toolkit' | 'Roadmap' | 'Blueprint';
   features: string[];
   targetAudience: string;
   problemSolved: string;

@@ -285,7 +285,7 @@ const ProductDetailView = () => {
               onClick={handleBuy}
               className="w-full sm:w-auto px-10 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-xl shadow-blue-200 flex items-center justify-center hover:bg-blue-700 transition-all"
             >
-              {loading ? "Processing..." : `Enroll for ₦${product.price.toLocaleString()}`}
+              {loading ? "Processing..." : `Download it for ₦${product.price.toLocaleString()}`}
             </button>
           )}
         </div>
@@ -330,7 +330,7 @@ const CategoryView = ({ name }: { name: string }) => {
 const MarketplaceView = () => {
   const data = getCMSData();
   const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 12; // Adjusted for a cleaner 3x4 grid
   
   const totalProducts = data.products.length;
   const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
@@ -349,7 +349,7 @@ const MarketplaceView = () => {
         {paginatedProducts.map(p => (
           <Link key={p.id} to={`/marketplace/${p.id}`} className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col hover:shadow-2xl transition-all group">
             <div className="relative h-64 overflow-hidden">
-              <img src={p.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src={p.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
               <div className="absolute top-4 left-4">
                 <span className="px-4 py-2 bg-white/90 rounded-2xl text-[10px] font-black text-blue-600 uppercase">
                   {p.type}
@@ -358,7 +358,8 @@ const MarketplaceView = () => {
             </div>
             <div className="p-8 flex-grow flex flex-col">
               <h3 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 mb-4">{p.name}</h3>
-              <div className="flex items-center justify-between mt-auto">
+              <p className="text-gray-500 text-sm mb-6 line-clamp-2">{p.description}</p>
+              <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
                 <span className="text-2xl font-black text-gray-900">₦{p.price.toLocaleString()}</span>
                 <span className="flex items-center text-blue-600 font-bold text-sm">
                   View Details <ChevronRight className="h-4 w-4 ml-1" />
@@ -383,7 +384,7 @@ const MarketplaceView = () => {
               <ChevronLeft className="h-6 w-6 text-gray-900" />
             </button>
             
-            <div className="flex items-center space-x-2 px-6">
+            <div className="flex items-center space-x-2 px-6 overflow-x-auto max-w-[300px] no-scrollbar">
               {[...Array(totalPages)].map((_, i) => (
                 <button
                   key={i}
@@ -391,7 +392,7 @@ const MarketplaceView = () => {
                     setCurrentPage(i + 1);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className={`h-10 w-10 rounded-xl font-bold transition-all ${
+                  className={`h-10 w-10 flex-shrink-0 rounded-xl font-bold transition-all ${
                     currentPage === i + 1 
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
                     : 'text-gray-500 hover:bg-gray-100'
@@ -414,7 +415,7 @@ const MarketplaceView = () => {
             </button>
           </div>
           <p className="text-sm font-medium text-gray-400 uppercase tracking-widest">
-            Showing Page {currentPage} of {totalPages}
+            Showing Page {currentPage} of {totalPages} ({totalProducts} Blueprints)
           </p>
         </div>
       )}
