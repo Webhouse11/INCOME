@@ -13,11 +13,11 @@
     </style>
     <script>
       // Global shim for process.env to support Node-style ESM packages in the browser
-      window.process = {
-        env: {
-          NODE_ENV: 'production',
-          API_KEY: '' 
-        }
+      // Placed at the top to ensure availability for all modules
+      window.process = window.process || {};
+      window.process.env = {
+        NODE_ENV: 'production',
+        API_KEY: '' 
       };
     </script>
     <script type="importmap">
