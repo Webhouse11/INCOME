@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCMSData } from '../services/storage.ts';
-import { CheckCircle, ArrowRight, Zap, Target, ShieldCheck, Star, ShoppingBag } from 'lucide-react';
+import { CheckCircle, ArrowRight, Zap, Target, ShieldCheck, Star, ShoppingBag, Search } from 'lucide-react';
+import { AISearch } from '../components/AISearch.tsx';
 
 const PurchaseNotification: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -107,6 +109,11 @@ export const Home: React.FC = () => {
           <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-10">
             {data.siteSettings.heroSubtitle}
           </p>
+
+          <div className="mb-12 max-w-3xl mx-auto">
+            <AISearch />
+          </div>
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/marketplace" className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200">
               Explore Income Guides
