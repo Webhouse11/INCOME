@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getCMSData } from '../services/storage.ts';
-import { CheckCircle, ArrowRight, Zap, Target, ShieldCheck, Star, ShoppingBag, Search } from 'lucide-react';
+import { CheckCircle, ArrowRight, Zap, Star, ShoppingBag, Layers, Box } from 'lucide-react';
 import { AISearch } from '../components/AISearch.tsx';
+import { ProductCard } from '../App.tsx';
 
 const PurchaseNotification: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -71,8 +72,16 @@ const PurchaseNotification: React.FC = () => {
 
 export const Home: React.FC = () => {
   const data = getCMSData();
-  const featuredArticles = data.articles.filter(a => a.featured).slice(0, 3);
-  const latestProducts = data.products.slice(0, 4); 
+  // Show 6 featured articles
+  const featuredArticles = data.articles.filter(a => a.featured || a.id.startsWith('at-')).slice(0, 6);
+  
+  const sortedProducts = [...data.products].sort((a, b) => 
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  
+  // Show exactly 8 products in a grid
+  const latestProducts = sortedProducts.slice(0, 8); 
+  const totalProductsCount = data.products.length;
 
   const testimonials = [
     { name: "Samuel O.", location: "Lagos, Nigeria", text: "The High-Profit Mini-Importation Blueprint saved me months of trial and error.", role: "Founder", avatar: "https://i.pravatar.cc/150?u=samuel" },
@@ -116,7 +125,7 @@ export const Home: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/marketplace" className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200">
-              Explore Income Guides
+              Explore {totalProductsCount}+ Income Guides
             </Link>
             <Link to="/blog" className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-xl font-bold text-lg hover:border-gray-300">
               Start Free Learning
@@ -129,14 +138,14 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Latest Income Blueprints</h2>
+              <h2 className="text-3xl font-bold text-gray-900">Latest Knowledge Hub</h2>
               <p className="text-gray-500 mt-2">Free educational content to get you started.</p>
             </div>
             <Link to="/blog" className="hidden sm:flex items-center font-semibold text-blue-600">
               View all <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredArticles.map((article) => (
               <Link key={article.id} to={`/blog/${article.slug}`} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col h-full hover:shadow-xl transition-all">
                 <img src={article.image} alt={article.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -157,33 +166,46 @@ export const Home: React.FC = () => {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900">Premium Blueprints</h2>
-          <p className="text-gray-500 mt-2 text-lg">Accelerator programs to cut your learning curve in half.</p>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 text-center md:text-left">
+          <div className="mb-6 md:mb-0">
+            <div className="flex items-center justify-center md:justify-start space-x-2 mb-2">
+              <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-black uppercase tracking-widest flex items-center">
+                <Layers className="h-3 w-3 mr-1" /> PRO LIBRARY
+              </span>
+              <span className="text-blue-600 font-bold text-sm">Recently Added</span>
+            </div>
+            <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight">Premium Blueprints</h2>
+            <p className="text-gray-500 mt-2 text-lg font-medium italic">Accelerator programs to cut your learning curve in half.</p>
+          </div>
+          
+          <div className="bg-gray-900 text-white p-6 rounded-3xl shadow-xl flex items-center space-x-6 relative group overflow-hidden">
+            <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-blue-600/20 transition-colors pointer-events-none"></div>
+            <div className="text-center">
+              <p className="text-4xl font-black text-blue-500">{totalProductsCount}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Total Systems</p>
+            </div>
+            <div className="h-10 w-px bg-gray-700"></div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 font-bold mb-1">DATA VAULT ACTIVE</span>
+              <Link to="/marketplace" className="group flex items-center text-sm font-bold hover:text-blue-400 transition-colors">
+                Browse Full Repository <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {latestProducts.map((product) => (
-            <Link key={product.id} to={`/marketplace/${product.id}`} className="group flex flex-col md:flex-row bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-2xl transition-all">
-              <img src={product.image} alt={product.name} className="w-full md:w-64 object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="p-8 flex flex-col justify-between w-full">
-                <div>
-                  <span className="px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-600 uppercase tracking-widest">{product.type}</span>
-                  <h3 className="text-2xl font-bold text-gray-900 mt-3 mb-4 group-hover:text-blue-600 transition-colors">{product.name}</h3>
-                  <ul className="space-y-2 mb-6">
-                    {product.features.slice(0, 3).map((f, idx) => (
-                      <li key={idx} className="flex items-center text-sm text-gray-600">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2" /> {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-blue-600">₦{product.price.toLocaleString()}</span>
-                  <span className="px-6 py-2 bg-gray-900 text-white rounded-lg font-bold">Get Access</span>
-                </div>
-              </div>
-            </Link>
+            <ProductCard key={product.id} p={product} />
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+           <Link to="/marketplace" className="inline-flex items-center px-10 py-6 bg-gray-900 text-white hover:bg-blue-700 rounded-[2rem] font-bold transition-all group shadow-2xl">
+              <Box className="h-5 w-5 mr-3 text-blue-400" />
+              Discover {Math.max(0, totalProductsCount - 8)} More Strategies in the Premium Vault
+              <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+           </Link>
         </div>
       </section>
 

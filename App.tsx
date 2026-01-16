@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useParams, Link, useLocation } from 'react-router-dom';
 import { Header } from './components/Header.tsx';
 import { Home } from './views/Home.tsx';
 import { AdminDashboard } from './views/AdminDashboard.tsx';
-import { getCMSData } from './services/storage.ts';
+import { getCMSData, initializeCMSData, getIntegrityReport } from './services/storage.ts';
 import { fetchLiveTrends, GroundedTrend } from './services/gemini.ts';
 import { 
   Download, 
@@ -29,9 +30,21 @@ import {
   Loader2,
   Globe,
   Youtube,
-  ExternalLink
+  ExternalLink,
+  Cpu,
+  Filter,
+  XCircle,
+  Shield,
+  Plus,
+  Sparkles,
+  Briefcase,
+  Coins,
+  TrendingUp,
+  Layout,
+  Star,
+  ShoppingBag
 } from 'lucide-react';
-import { Article, Product, CategoryType } from './types.ts';
+import { Article, Product, CategoryType, CMSData } from './types.ts';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -43,13 +56,20 @@ const ScrollToTop = () => {
 
 const ArticleDetailView = () => {
   const { slug } = useParams<{ slug: string }>();
-  const data = getCMSData();
-  const article = data.articles.find(a => a.slug === slug || a.id === slug);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [cms, setCms] = useState<CMSData>(getCMSData());
 
-  if (!article) return <div className="max-w-7xl mx-auto px-4 py-32 text-center"><h2 className="text-3xl font-bold mb-4">Article Not Found</h2><Link to="/blog" className="text-blue-600 font-bold hover:underline">Back to Knowledge Hub</Link></div>;
+  useEffect(() => {
+    const data = getCMSData();
+    const found = data.articles.find(a => a.slug === slug || a.id === slug);
+    setArticle(found || null);
+    setCms(data);
+  }, [slug]);
 
-  const relatedArticles = data.articles.filter(a => a.category === article.category && a.id !== article.id).slice(0, 3);
-  const relatedProducts = data.products.filter(p => p.category === article.category).slice(0, 2);
+  if (!article) return <div className="max-w-4xl mx-auto px-4 py-32 text-center"><h2 className="text-3xl font-bold mb-4">Article Not Found</h2><Link to="/blog" className="text-blue-600 font-bold hover:underline">Back to Knowledge Hub</Link></div>;
+
+  const relatedArticles = cms.articles.filter(a => a.category === article.category && a.id !== article.id).slice(0, 3);
+  const relatedProducts = cms.products.filter(p => p.category === article.category).slice(0, 2);
 
   return (
     <div className="bg-white">
@@ -97,7 +117,7 @@ const ArticleDetailView = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {relatedArticles.map(a => (
               <Link key={a.id} to={`/blog/${a.slug}`} className="group flex flex-col h-full bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all">
-                <img src={a.image} className="h-40 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={a.image} className="h-40 w-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 <div className="p-5 flex-grow"><h4 className="font-bold text-gray-900 leading-tight group-hover:text-blue-600 line-clamp-2">{a.title}</h4></div>
               </Link>
             ))}
@@ -110,11 +130,15 @@ const ArticleDetailView = () => {
 
 const ProductDetailView = () => {
   const { id } = useParams<{ id: string }>();
-  const data = getCMSData();
-  const product = data.products.find(p => p.id === id || p.slug === id);
+  const [product, setProduct] = useState<Product | null>(null);
   const [isPurchased, setIsPurchased] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const data = getCMSData();
+    const found = data.products.find(p => p.id === id || p.slug === id);
+    setProduct(found || null);
+  }, [id]);
 
   if (!product) return <div className="max-w-7xl mx-auto px-4 py-32 text-center"><h2 className="text-3xl font-bold mb-4">Product Not Found</h2><Link to="/marketplace" className="text-blue-600 font-bold hover:underline">Back to Marketplace</Link></div>;
 
@@ -185,91 +209,7 @@ const ProductDetailView = () => {
           </div>
         </div>
       </div>
-
-      {product.modules && (
-        <section className="py-24 bg-white">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-black text-gray-900 mb-4 uppercase tracking-tight">What's Inside The Blueprint?</h2>
-              <div className="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
-            </div>
-            <div className="space-y-6">
-              {product.modules.map((mod, idx) => (
-                <div key={idx} className="bg-gray-50 border border-gray-100 rounded-3xl p-8 hover:bg-blue-50/30 transition-colors">
-                  <div className="flex items-center mb-6">
-                    <span className="h-10 w-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold mr-4">
-                      {idx + 1}
-                    </span>
-                    <h3 className="text-xl font-bold text-gray-900">{mod.title}</h3>
-                  </div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {mod.items.map((item, i) => (
-                      <li key={i} className="flex items-start text-gray-600">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                        <span className="text-sm font-medium">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {product.bonuses && (
-        <section className="py-24 bg-blue-50">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <span className="inline-block px-4 py-1.5 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest mb-4">Limited Time Offer</span>
-              <h2 className="text-4xl font-black text-gray-900">Exclusive Bonuses (Value ₦25k+)</h2>
-              <p className="mt-4 text-gray-600 font-medium">You get these for FREE when you purchase today.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {product.bonuses.map((bonus, i) => (
-                <div key={i} className="bg-white p-8 rounded-[2rem] border border-blue-100 shadow-xl shadow-blue-200/50 flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-6">
-                      <Gift className="h-12 w-12 text-blue-600" />
-                      <span className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold">VALUED AT ₦{bonus.value.toLocaleString()}</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{bonus.title}</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">{bonus.description}</p>
-                  </div>
-                  <div className="pt-4 border-t border-gray-50 text-blue-600 font-bold text-sm">Included in your purchase</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {product.faqs && (
-        <section className="py-24 bg-white">
-          <div className="max-w-3xl mx-auto px-4">
-            <h2 className="text-3xl font-black text-gray-900 mb-12 text-center uppercase tracking-tight">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {product.faqs.map((faq, idx) => (
-                <div key={idx} className="border border-gray-100 rounded-2xl overflow-hidden">
-                  <button 
-                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                    className="w-full flex items-center justify-between p-6 text-left font-bold text-gray-900 bg-white hover:bg-gray-50 transition-colors"
-                  >
-                    {faq.question}
-                    <ChevronDown className={`h-5 w-5 transition-transform ${activeFaq === idx ? 'rotate-180' : ''}`} />
-                  </button>
-                  {activeFaq === idx && (
-                    <div className="p-6 pt-0 bg-white text-gray-600 text-sm leading-relaxed border-t border-gray-50">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
+      
       <div className="sticky bottom-0 bg-white/80 backdrop-blur-lg border-t border-gray-100 py-6 px-4 z-50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="hidden sm:block">
@@ -294,129 +234,319 @@ const ProductDetailView = () => {
   );
 };
 
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<CMSData | null>(null);
+  const [initStage, setInitStage] = useState('Initiating Engine...');
+
+  useEffect(() => {
+    const init = async () => {
+      setInitStage('Scanning Baseline...');
+      await new Promise(r => setTimeout(r, 600));
+      setInitStage('Verifying Workspace Integrity...');
+      const loadedData = await initializeCMSData();
+      setInitStage('Recovery Sync Complete.');
+      await new Promise(r => setTimeout(r, 400));
+      setData(loadedData);
+      setIsLoading(false);
+    };
+    init();
+  }, []);
+
+  if (isLoading || !data) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-900 text-white">
+        <div className="relative mb-8">
+           <div className="h-20 w-20 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"></div>
+           <Shield className="h-10 w-10 text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+        </div>
+        <h1 className="text-3xl font-black tracking-widest uppercase mb-2">Income<span className="text-blue-500">Lab</span></h1>
+        <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest animate-pulse">{initStage}</p>
+      </div>
+    );
+  }
+
+  return (
+    <Router>
+      <ScrollToTop />
+      <div className="min-h-screen bg-white selection:bg-blue-100">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/category/business" element={<CategoryView name="Business" />} />
+            <Route path="/category/tech" element={<CategoryView name="Tech" />} />
+            <Route path="/category/digital-assets" element={<CategoryView name="Digital Assets" />} />
+            <Route path="/marketplace" element={<MarketplaceView />} />
+            <Route path="/marketplace/:id" element={<ProductDetailView />} />
+            <Route path="/blog" element={<BlogView />} />
+            <Route path="/blog/:slug" element={<ArticleDetailView />} />
+          </Routes>
+        </main>
+        <footer className="bg-gray-900 text-white py-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
+              <div className="lg:col-span-2">
+                <Link to="/" className="text-3xl font-black text-blue-500 tracking-tighter uppercase">INCOME<span className="text-white">LAB</span></Link>
+                <p className="mt-6 text-gray-400 text-lg leading-relaxed">The authoritative hub for builders mastering modern income systems.</p>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold mb-8 uppercase tracking-widest">Navigation</h4>
+                <ul className="space-y-4 text-gray-400 font-medium">
+                  <li><Link to="/category/business" className="hover:text-blue-400">Business Income</Link></li>
+                  <li><Link to="/category/tech" className="hover:text-blue-400">Tech Income</Link></li>
+                  <li><Link to="/category/digital-assets" className="hover:text-blue-400">Digital Assets</Link></li>
+                  <li><Link to="/marketplace" className="hover:text-blue-400">Premium Market</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold mb-8 uppercase tracking-widest">Support</h4>
+                <ul className="space-y-4 text-gray-400 font-medium">
+                  <li><a href="#" className="hover:text-blue-400">Privacy Policy</a></li>
+                  <li><a href="#" className="hover:text-blue-400">Earnings Disclaimer</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </Router>
+  );
+}
+
 const CategoryView = ({ name }: { name: string }) => {
   const data = getCMSData();
-  const articles = data.articles.filter(a => a.category.toLowerCase().includes(name.toLowerCase().split(' ')[0]));
-  const products = data.products.filter(p => p.category.toLowerCase().includes(name.toLowerCase().split(' ')[0]));
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Initial filtering by category
+  const catPrefix = name.toLowerCase().split(' ')[0];
+  const articlesInCat = data.articles.filter(a => a.category.toLowerCase().includes(catPrefix));
+  const productsInCat = data.products.filter(p => p.category.toLowerCase().includes(catPrefix));
+
+  // Secondary search filtering
+  const filteredArticles = articlesInCat.filter(a => 
+    a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    a.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
+  // Pick exactly ONE premium product for the bottom offer (latest one in the category)
+  const featuredOffer = productsInCat[0];
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
-      <div className="mb-16"><h1 className="text-5xl font-extrabold text-gray-900 mb-6">{name} Hub</h1><p className="text-xl text-gray-600 max-w-3xl">Expert blueprints specifically designed for the {name.toLowerCase()} landscape.</p></div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-        <div className="lg:col-span-2 space-y-12">
-          <h2 className="text-2xl font-bold text-gray-900 pb-4 border-b-2 border-blue-600 inline-block mb-8 uppercase">Latest Knowledge</h2>
-          {articles.map(a => (
-            <Link key={a.id} to={`/blog/${a.slug}`} className="flex flex-col md:flex-row gap-8 group">
-              <div className="md:w-64 h-44 flex-shrink-0 overflow-hidden rounded-3xl"><img src={a.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform" /></div>
-              <div><h3 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 mb-3">{a.title}</h3><p className="text-gray-500 line-clamp-2">{a.excerpt}</p></div>
-            </Link>
-          ))}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
+        <div className="max-w-3xl">
+          <div className="flex items-center space-x-2 mb-4">
+             {name === 'Business' && <Briefcase className="h-6 w-6 text-blue-600" />}
+             {name === 'Tech' && <Cpu className="h-6 w-6 text-blue-600" />}
+             {name === 'Digital Assets' && <Coins className="h-6 w-6 text-blue-600" />}
+             <span className="text-blue-600 font-black text-xs uppercase tracking-widest">Knowledge Cluster</span>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">{name} Hub</h1>
+          <p className="text-xl text-gray-600 font-medium">Expert blueprints specifically designed for the {name.toLowerCase()} landscape.</p>
         </div>
-        <div className="space-y-10">
-          <h2 className="text-2xl font-bold text-gray-900 pb-4 border-b-2 border-purple-600 inline-block mb-4 uppercase">Premium Tools</h2>
-          <div className="space-y-6">
-            {products.map(p => (
-              <Link key={p.id} to={`/marketplace/${p.id}`} className="block p-6 bg-white border border-gray-100 rounded-3xl hover:shadow-lg transition-all group">
-                <div className="flex justify-between mb-4"><span className="text-[10px] font-black text-purple-600 uppercase">{p.type}</span><span className="font-bold text-gray-900">₦{p.price.toLocaleString()}</span></div>
-                <h4 className="font-bold text-gray-900 group-hover:text-blue-600 mb-2">{p.name}</h4>
+        
+        {/* Localized Category Search */}
+        <div className="w-full md:w-96 relative group">
+          <div className="absolute -inset-1 bg-blue-600 rounded-2xl blur opacity-10 group-focus-within:opacity-25 transition-all"></div>
+          <input 
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={`Search ${name} Knowledge...`}
+            className="relative w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-0 transition-all outline-none font-bold text-sm shadow-sm"
+          />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+        </div>
+      </div>
+
+      <div className="mb-24">
+        <div className="flex items-center justify-between pb-4 border-b-2 border-blue-600 mb-8">
+          <h2 className="text-2xl font-black text-gray-900 uppercase">Knowledge Base</h2>
+          <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-[10px] font-black">{filteredArticles.length} Articles</span>
+        </div>
+        
+        {filteredArticles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {filteredArticles.map(a => (
+              <Link key={a.id} to={`/blog/${a.slug}`} className="flex flex-col gap-6 group">
+                <div className="w-full h-64 overflow-hidden rounded-[2.5rem] border border-gray-100">
+                  <img src={a.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 mb-3 transition-colors">{a.title}</h3>
+                  <p className="text-gray-500 font-medium line-clamp-2 leading-relaxed">{a.excerpt}</p>
+                </div>
               </Link>
             ))}
           </div>
+        ) : (
+          <div className="py-20 text-center bg-gray-50 rounded-[3rem] border border-dashed border-gray-200">
+             <XCircle className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+             <p className="text-gray-400 font-bold uppercase tracking-widest text-sm">No matching articles in this cluster</p>
+          </div>
+        )}
+      </div>
+
+      {/* Single Premium Offer at the Bottom */}
+      {featuredOffer && (
+        <section className="relative mt-32">
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-10">
+            <span className="bg-gray-900 text-white px-8 py-3 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-2xl flex items-center">
+              <Star className="h-4 w-4 mr-2 text-blue-400 fill-current" /> Category Premium Pick
+            </span>
+          </div>
+          <div className="bg-blue-600 rounded-[3.5rem] p-1 shadow-2xl overflow-hidden group">
+            <div className="bg-white rounded-[3.2rem] p-8 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-24 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-20 opacity-[0.03] pointer-events-none -rotate-12 translate-x-12 -translate-y-12">
+                <ShoppingBag className="h-96 w-96" />
+              </div>
+              
+              <div className="lg:w-1/2 text-center lg:text-left">
+                <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-[10px] font-black uppercase tracking-widest">
+                    {featuredOffer.type}
+                  </span>
+                  <span className="text-gray-400 text-xs font-bold">• Full System Access</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight">
+                  {featuredOffer.name}
+                </h2>
+                <p className="text-gray-500 text-xl font-medium mb-10 leading-relaxed">
+                  {featuredOffer.description}
+                </p>
+                <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+                  <Link 
+                    to={`/marketplace/${featuredOffer.id}`} 
+                    className="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-blue-200 hover:bg-gray-900 transition-all flex items-center"
+                  >
+                    Download Blueprint <ArrowRight className="ml-3 h-5 w-5" />
+                  </Link>
+                  <div className="flex flex-col text-center lg:text-left">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.1em]">Instant Entry</span>
+                    <span className="text-2xl font-black text-gray-900">₦{featuredOffer.price.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:w-1/2 w-full max-w-lg">
+                <div className="relative group/img">
+                  <div className="absolute -inset-2 bg-gradient-to-br from-blue-600 to-purple-600 rounded-[3rem] blur opacity-10 group-hover/img:opacity-30 transition-all duration-700"></div>
+                  <img 
+                    src={featuredOffer.image} 
+                    className="relative w-full aspect-[4/3] object-cover rounded-[2.8rem] shadow-2xl group-hover/img:scale-[1.02] transition-transform duration-700" 
+                    alt={featuredOffer.name} 
+                  />
+                  <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-[2rem] shadow-2xl border border-gray-50 flex items-center gap-4 animate-bounce duration-[3000ms]">
+                    <div className="h-12 w-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                      <Zap className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase text-gray-400">Restored</p>
+                      <p className="font-bold text-gray-900">90+ Niches</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12 text-center">
+            <Link to="/marketplace" className="text-gray-400 hover:text-blue-600 font-bold flex items-center justify-center gap-2 group transition-colors">
+              Explore the rest of the Marketplace <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+};
+
+// Fix: Explicitly type ProductCard as React.FC to allow standard props like 'key' in list rendering, resolving the TypeScript assignability errors.
+export const ProductCard: React.FC<{ p: Product }> = ({ p }) => {
+  return (
+    <Link to={`/marketplace/${p.id}`} className="group bg-white rounded-[1.5rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <img 
+          src={p.image} 
+          alt={p.name} 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+        />
+        <div className="absolute top-4 left-4">
+          <span className="px-4 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-[9px] font-black text-blue-600 uppercase tracking-widest shadow-sm">
+            {p.type}
+          </span>
         </div>
       </div>
-    </div>
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
+          {p.name}
+        </h3>
+        <p className="text-gray-500 text-sm mt-3 line-clamp-2 flex-grow">
+          {p.description}
+        </p>
+        <div className="mt-6 pt-5 border-t border-gray-50 flex items-center justify-between">
+          <span className="text-2xl font-black text-gray-900">
+            ₦{p.price.toLocaleString()}
+          </span>
+          <span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            View Details <ChevronRight className="h-4 w-4" />
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 };
 
 const MarketplaceView = () => {
   const data = getCMSData();
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 12; // Adjusted for a cleaner 3x4 grid
+  const [searchQuery, setSearchQuery] = useState('');
   
-  const totalProducts = data.products.length;
-  const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
-  
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProducts = data.products.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const filteredProducts = data.products.filter(p => 
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-6">Premium Market</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">Get exclusive blueprints that go beyond the blog. Designed for ROI.</p>
+    <div className="max-w-[1400px] mx-auto px-4 py-20">
+      <div className="text-center mb-16 max-w-4xl mx-auto">
+        <div className="flex items-center justify-center space-x-2 mb-6">
+           <span className="h-px w-12 bg-gray-200"></span>
+           <span className="text-blue-600 font-black text-xs uppercase tracking-[0.2em]">Global Opportunity Repository</span>
+           <span className="h-px w-12 bg-gray-200"></span>
+        </div>
+        <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-8 uppercase tracking-tighter leading-[0.9]">
+          Premium <span className="text-blue-600">Niche</span> Depository
+        </h1>
+        <p className="text-gray-500 mb-10 text-xl font-medium leading-relaxed">
+          Access {data.products.length} battle-tested income architectures across all major sectors. 
+          Standardized blueprints for modern wealth builders.
+        </p>
+        <div className="relative max-w-2xl mx-auto group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-600 rounded-3xl blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search across all 90+ niches..."
+            className="relative block w-full pl-14 pr-6 py-6 bg-white border-2 border-gray-100 rounded-3xl text-lg focus:border-blue-500 transition-all outline-none shadow-xl"
+          />
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 h-6 w-6" />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {paginatedProducts.map(p => (
-          <Link key={p.id} to={`/marketplace/${p.id}`} className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col hover:shadow-2xl transition-all group">
-            <div className="relative h-64 overflow-hidden">
-              <img src={p.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-              <div className="absolute top-4 left-4">
-                <span className="px-4 py-2 bg-white/90 rounded-2xl text-[10px] font-black text-blue-600 uppercase">
-                  {p.type}
-                </span>
-              </div>
-            </div>
-            <div className="p-8 flex-grow flex flex-col">
-              <h3 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 mb-4">{p.name}</h3>
-              <p className="text-gray-500 text-sm mb-6 line-clamp-2">{p.description}</p>
-              <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
-                <span className="text-2xl font-black text-gray-900">₦{p.price.toLocaleString()}</span>
-                <span className="flex items-center text-blue-600 font-bold text-sm">
-                  View Details <ChevronRight className="h-4 w-4 ml-1" />
-                </span>
-              </div>
-            </div>
-          </Link>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredProducts.map(p => (
+          <ProductCard key={p.id} p={p} />
         ))}
       </div>
 
-      {totalPages > 1 && (
-        <div className="mt-20 flex flex-col items-center space-y-4">
-          <div className="flex items-center space-x-2">
-            <button 
-              onClick={() => {
-                setCurrentPage(prev => Math.max(prev - 1, 1));
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              disabled={currentPage === 1}
-              className="p-4 rounded-full border border-gray-100 bg-white shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronLeft className="h-6 w-6 text-gray-900" />
-            </button>
-            
-            <div className="flex items-center space-x-2 px-6 overflow-x-auto max-w-[300px] no-scrollbar">
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setCurrentPage(i + 1);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className={`h-10 w-10 flex-shrink-0 rounded-xl font-bold transition-all ${
-                    currentPage === i + 1 
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
-                    : 'text-gray-500 hover:bg-gray-100'
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-            </div>
-
-            <button 
-              onClick={() => {
-                setCurrentPage(prev => Math.min(prev + 1, totalPages));
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              disabled={currentPage === totalPages}
-              className="p-4 rounded-full border border-gray-100 bg-white shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronRight className="h-6 w-6 text-gray-900" />
-            </button>
-          </div>
-          <p className="text-sm font-medium text-gray-400 uppercase tracking-widest">
-            Showing Page {currentPage} of {totalPages} ({totalProducts} Blueprints)
-          </p>
+      {filteredProducts.length === 0 && (
+        <div className="text-center py-32 bg-gray-50 rounded-[3rem] border-2 border-dashed border-gray-200">
+           <Search className="h-16 w-16 mx-auto mb-6 text-gray-300" />
+           <p className="text-xl font-bold text-gray-900 uppercase tracking-widest">Zero matching blueprints detected</p>
+           <button onClick={() => setSearchQuery('')} className="mt-6 text-blue-600 font-bold hover:underline">Reset Depository Scanners</button>
         </div>
       )}
     </div>
@@ -427,137 +557,58 @@ const BlogView = () => {
   const data = getCMSData();
   const [trends, setTrends] = useState<GroundedTrend[]>([]);
   const [loadingTrends, setLoadingTrends] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>(CategoryType.BUSINESS);
 
   const handleScanTrends = async () => {
     setLoadingTrends(true);
-    const liveData = await fetchLiveTrends(selectedCategory);
+    const liveData = await fetchLiveTrends('Business');
     setTrends(liveData);
     setLoadingTrends(false);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
-        <h1 className="text-5xl font-extrabold text-gray-900">Knowledge Hub</h1>
-        
-        <div className="w-full md:max-w-md bg-gray-900 rounded-[2rem] p-6 text-white shadow-2xl">
-          <div className="flex items-center space-x-2 mb-4">
-            <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-xs font-black uppercase tracking-widest text-gray-400">Live Trend Researcher</span>
-          </div>
-          <p className="text-sm text-gray-400 mb-4">Scanner searching Google & YouTube for real-time income opportunities.</p>
-          <div className="flex gap-2">
-            <select 
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value as CategoryType)}
-              className="flex-grow bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value={CategoryType.BUSINESS} className="text-black">Business Trends</option>
-              <option value={CategoryType.TECH} className="text-black">Tech Trends</option>
-              <option value={CategoryType.DIGITAL_ASSETS} className="text-black">Asset Trends</option>
-            </select>
-            <button 
-              onClick={handleScanTrends}
-              disabled={loadingTrends}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-sm font-bold flex items-center disabled:opacity-50"
-            >
-              {loadingTrends ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-            </button>
-          </div>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+        <div>
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4 uppercase tracking-tight">Knowledge Hub</h1>
+          <p className="text-gray-500 text-xl font-medium">Free deep-dives into the latest income trends.</p>
         </div>
+        <button onClick={handleScanTrends} disabled={loadingTrends} className="px-8 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest flex items-center hover:bg-blue-600 transition-colors shadow-xl">
+          {loadingTrends ? <Loader2 className="animate-spin mr-3 h-5 w-5" /> : <Zap className="mr-3 h-5 w-5 text-blue-400" />} Trend Scan
+        </button>
       </div>
 
       {trends.length > 0 && (
-        <section className="mb-20 animate-in fade-in slide-in-from-top-4 duration-500">
-          <div className="bg-blue-50 border-2 border-blue-100 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
-             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-                <Globe className="h-40 w-40 text-blue-600" />
-             </div>
-             <h2 className="text-2xl font-black text-gray-900 mb-6 flex items-center">
-                <Zap className="h-6 w-6 text-blue-600 mr-3" /> Live Discovery: {selectedCategory}
-             </h2>
-             {trends.map((t, i) => (
-               <div key={i} className="space-y-6">
-                 <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-wrap">
-                   {t.description}
-                 </div>
-                 <div className="pt-6 border-t border-blue-200">
-                    <p className="text-xs font-black text-blue-600 uppercase mb-4 tracking-widest">Data Sources (Grounded Citations)</p>
-                    <div className="flex flex-wrap gap-3">
-                      {t.sources.map((src, idx) => (
-                        <a 
-                          key={idx} 
-                          href={src.uri} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-white border border-blue-100 rounded-xl text-xs font-bold text-gray-700 hover:shadow-lg transition-all"
-                        >
-                          {src.uri.includes('youtube') ? <Youtube className="h-3 w-3 mr-2 text-red-600" /> : <Globe className="h-3 w-3 mr-2 text-blue-600" />}
-                          {src.title}
-                          <ExternalLink className="h-3 w-3 ml-2 opacity-30" />
-                        </a>
-                      ))}
-                    </div>
-                 </div>
-               </div>
-             ))}
-          </div>
+        <section className="mb-20 bg-blue-50 p-10 rounded-[3rem] border-2 border-blue-100 relative overflow-hidden">
+           <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><Globe className="h-32 w-32" /></div>
+           <h2 className="text-2xl font-black mb-6 uppercase tracking-tight flex items-center">
+             <Sparkles className="h-6 w-6 mr-3 text-blue-600" /> Real-Time Trend Insights
+           </h2>
+           <div className="bg-white p-8 rounded-2xl border border-blue-100 shadow-sm">
+             <p className="text-gray-700 whitespace-pre-wrap leading-relaxed font-medium">{trends[0].description}</p>
+           </div>
         </section>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {data.articles.map(a => (
-          <Link key={a.id} to={`/blog/${a.slug}`} className="flex flex-col bg-white rounded-[2rem] border border-gray-100 overflow-hidden group hover:shadow-xl transition-all">
-            <div className="relative h-72 overflow-hidden"><img src={a.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" /></div>
-            <div className="p-8"><span className="text-[10px] font-black text-blue-600 uppercase tracking-widest block mb-2">{a.category}</span><h3 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 mb-4">{a.title}</h3><p className="text-gray-500 line-clamp-3 mb-6">{a.excerpt}</p><span className="text-gray-900 font-bold text-sm inline-flex items-center">Read Blueprint <ArrowRight className="ml-2 h-4 w-4" /></span></div>
+          <Link key={a.id} to={`/blog/${a.slug}`} className="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all flex flex-col">
+            <div className="h-72 overflow-hidden relative">
+              <img src={a.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute bottom-4 left-4">
+                <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest">
+                  {a.category}
+                </span>
+              </div>
+            </div>
+            <div className="p-8">
+              <h3 className="text-2xl font-bold group-hover:text-blue-600 transition-colors mb-4 leading-tight">{a.title}</h3>
+              <p className="text-gray-500 text-sm line-clamp-2">{a.excerpt}</p>
+            </div>
           </Link>
         ))}
       </div>
     </div>
   );
 };
-
-const Footer = () => (
-  <footer className="bg-gray-900 text-white py-24">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
-        <div className="lg:col-span-2">
-          <Link to="/" className="text-3xl font-black text-blue-500 tracking-tighter uppercase">INCOME<span className="text-white">LAB</span></Link>
-          <p className="mt-6 text-gray-400 text-lg leading-relaxed">The authoritative hub for builders mastering modern income systems.</p>
-        </div>
-        <div>
-          <h4 className="text-lg font-bold mb-8 uppercase tracking-widest">Navigation</h4>
-          <ul className="space-y-4 text-gray-400 font-medium">
-            <li><Link to="/category/business" className="hover:text-blue-400">Business Income</Link></li>
-            <li><Link to="/category/tech" className="hover:text-blue-400">Tech Income</Link></li>
-            <li><Link to="/category/digital-assets" className="hover:text-blue-400">Digital Assets</Link></li>
-            <li><Link to="/marketplace" className="hover:text-blue-400">Premium Market</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-lg font-bold mb-8 uppercase tracking-widest">Support</h4>
-          <ul className="space-y-4 text-gray-400 font-medium">
-            <li><a href="#" className="hover:text-blue-400">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-blue-400">Earnings Disclaimer</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-);
-
-function App() {
-  return (
-    <Router>
-      <ScrollToTop />
-      <div className="min-h-screen bg-white selection:bg-blue-100">
-        <Header />
-        <main><Routes><Route path="/" element={<Home />} /><Route path="/admin" element={<AdminDashboard />} /><Route path="/category/business" element={<CategoryView name="Business" />} /><Route path="/category/tech" element={<CategoryView name="Tech" />} /><Route path="/category/digital-assets" element={<CategoryView name="Digital Assets" />} /><Route path="/marketplace" element={<MarketplaceView />} /><Route path="/marketplace/:id" element={<ProductDetailView />} /><Route path="/blog" element={<BlogView />} /><Route path="/blog/:slug" element={<ArticleDetailView />} /></Routes></main>
-        <Footer />
-      </div>
-    </Router>
-  );
-}
 
 export default App;

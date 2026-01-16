@@ -1,9 +1,15 @@
 
-
 export enum CategoryType {
   BUSINESS = 'Business',
   TECH = 'Tech',
   DIGITAL_ASSETS = 'Digital Assets'
+}
+
+export interface LogEntry {
+  timestamp: string;
+  level: 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'RECOVERY';
+  message: string;
+  source: string;
 }
 
 export interface Article {
@@ -16,9 +22,13 @@ export interface Article {
   image: string;
   author: string;
   createdAt: string;
+  updatedAt?: string;
   metaTitle?: string;
   metaDescription?: string;
   featured?: boolean;
+  source?: 'system' | 'user';
+  isLocked?: boolean;
+  version: number;
 }
 
 export interface ProductBonus {
@@ -41,27 +51,36 @@ export interface Product {
   currency: 'USD' | 'NGN';
   category: CategoryType;
   image: string;
-  // Added 'Blueprint' to the valid product types to match constants.ts
   type: 'Ebook' | 'Course' | 'Template' | 'Guide' | 'Toolkit' | 'Roadmap' | 'Blueprint';
   features: string[];
   targetAudience: string;
   problemSolved: string;
   downloadUrl?: string;
-  // Enhanced Sales Page Fields
+  createdAt: string;
+  updatedAt?: string;
   fullSalesCopy?: string;
   modules?: { title: string; items: string[] }[];
   bonuses?: ProductBonus[];
   faqs?: ProductFAQ[];
+  source?: 'system' | 'user';
+  isLocked?: boolean;
+  version: number;
 }
 
 export interface CMSData {
   articles: Article[];
   products: Product[];
+  deletedIds?: string[];
+  backups?: Record<string, any[]>; // Maps ID to array of previous states
+  logs: LogEntry[];
   siteSettings: {
     heroTitle: string;
     heroSubtitle: string;
     announcement: string;
+    integrityProtection?: boolean;
+    autoSnapshot?: boolean;
   };
+  lastAuditAt?: string;
 }
 
 export interface AIRecommendation {
