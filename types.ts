@@ -27,8 +27,6 @@ export interface Article {
   metaDescription?: string;
   featured?: boolean;
   source?: 'system' | 'user';
-  isLocked?: boolean;
-  version: number;
 }
 
 export interface ProductBonus {
@@ -63,22 +61,16 @@ export interface Product {
   bonuses?: ProductBonus[];
   faqs?: ProductFAQ[];
   source?: 'system' | 'user';
-  isLocked?: boolean;
-  version: number;
 }
 
 export interface CMSData {
   articles: Article[];
   products: Product[];
-  deletedIds?: string[];
-  backups?: Record<string, any[]>; // Maps ID to array of previous states
   logs: LogEntry[];
   siteSettings: {
     heroTitle: string;
     heroSubtitle: string;
     announcement: string;
-    integrityProtection?: boolean;
-    autoSnapshot?: boolean;
   };
   lastAuditAt?: string;
 }

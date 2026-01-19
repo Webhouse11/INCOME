@@ -46,6 +46,26 @@ import {
 } from 'lucide-react';
 import { Article, Product, CategoryType, CMSData } from './types.ts';
 
+/**
+ * Global sorting utility for Knowledge Nodes
+ */
+const sortArticlesLatest = (a: Article, b: Article) => {
+  const timeA = new Date(a.createdAt).getTime();
+  const timeB = new Date(b.createdAt).getTime();
+  if (timeB !== timeA) return timeB - timeA;
+  return b.id.localeCompare(a.id);
+};
+
+/**
+ * Utility to sort products by date (descending), falling back to ID if dates are identical.
+ */
+const sortProductsLatest = (a: Product, b: Product) => {
+  const timeA = new Date(a.createdAt).getTime();
+  const timeB = new Date(b.createdAt).getTime();
+  if (timeB !== timeA) return timeB - timeA;
+  return b.id.localeCompare(a.id, undefined, { numeric: true });
+};
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -68,8 +88,15 @@ const ArticleDetailView = () => {
 
   if (!article) return <div className="max-w-4xl mx-auto px-4 py-32 text-center"><h2 className="text-3xl font-bold mb-4">Article Not Found</h2><Link to="/blog" className="text-blue-600 font-bold hover:underline">Back to Knowledge Hub</Link></div>;
 
-  const relatedArticles = cms.articles.filter(a => a.category === article.category && a.id !== article.id).slice(0, 3);
-  const relatedProducts = cms.products.filter(p => p.category === article.category).slice(0, 2);
+  const relatedArticles = cms.articles
+    .filter(a => a.category === article.category && a.id !== article.id)
+    .sort(sortArticlesLatest)
+    .slice(0, 3);
+
+  const relatedProducts = cms.products
+    .filter(p => p.category === article.category)
+    .sort(sortProductsLatest)
+    .slice(0, 2);
 
   return (
     <div className="bg-white">
@@ -319,10 +346,15 @@ const CategoryView = ({ name }: { name: string }) => {
   const data = getCMSData();
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Initial filtering by category
+  // Initial filtering by category and chronological sort
   const catPrefix = name.toLowerCase().split(' ')[0];
-  const articlesInCat = data.articles.filter(a => a.category.toLowerCase().includes(catPrefix));
-  const productsInCat = data.products.filter(p => p.category.toLowerCase().includes(catPrefix));
+  const articlesInCat = data.articles
+    .filter(a => a.category.toLowerCase().includes(catPrefix))
+    .sort(sortArticlesLatest);
+  
+  const productsInCat = data.products
+    .filter(p => p.category.toLowerCase().includes(catPrefix))
+    .sort(sortProductsLatest);
 
   // Secondary search filtering
   const filteredArticles = articlesInCat.filter(a => 
@@ -330,7 +362,6 @@ const CategoryView = ({ name }: { name: string }) => {
     a.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
   );
   
-  // Pick exactly ONE premium product for the bottom offer (latest one in the category)
   const featuredOffer = productsInCat[0];
 
   return (
@@ -347,7 +378,6 @@ const CategoryView = ({ name }: { name: string }) => {
           <p className="text-xl text-gray-600 font-medium">Expert blueprints specifically designed for the {name.toLowerCase()} landscape.</p>
         </div>
         
-        {/* Localized Category Search */}
         <div className="w-full md:w-96 relative group">
           <div className="absolute -inset-1 bg-blue-600 rounded-2xl blur opacity-10 group-focus-within:opacity-25 transition-all"></div>
           <input 
@@ -389,7 +419,6 @@ const CategoryView = ({ name }: { name: string }) => {
         )}
       </div>
 
-      {/* Single Premium Offer at the Bottom */}
       {featuredOffer && (
         <section className="relative mt-32">
           <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-10">
@@ -462,7 +491,6 @@ const CategoryView = ({ name }: { name: string }) => {
   );
 };
 
-// Fix: Explicitly type ProductCard as React.FC to allow standard props like 'key' in list rendering, resolving the TypeScript assignability errors.
 export const ProductCard: React.FC<{ p: Product }> = ({ p }) => {
   return (
     <Link to={`/marketplace/${p.id}`} className="group bg-white rounded-[1.5rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
@@ -501,8 +529,9 @@ export const ProductCard: React.FC<{ p: Product }> = ({ p }) => {
 const MarketplaceView = () => {
   const data = getCMSData();
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const filteredProducts = data.products.filter(p => 
+  const sortedProducts = [...data.products].sort(sortProductsLatest);
+
+  const filteredProducts = sortedProducts.filter(p => 
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -521,7 +550,6 @@ const MarketplaceView = () => {
         </h1>
         <p className="text-gray-500 mb-10 text-xl font-medium leading-relaxed">
           Access {data.products.length} battle-tested income architectures across all major sectors. 
-          Standardized blueprints for modern wealth builders.
         </p>
         <div className="relative max-w-2xl mx-auto group">
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-600 rounded-3xl blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
@@ -529,7 +557,7 @@ const MarketplaceView = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search across all 90+ niches..."
+            placeholder="Search across all blueprints..."
             className="relative block w-full pl-14 pr-6 py-6 bg-white border-2 border-gray-100 rounded-3xl text-lg focus:border-blue-500 transition-all outline-none shadow-xl"
           />
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 h-6 w-6" />
@@ -557,6 +585,8 @@ const BlogView = () => {
   const data = getCMSData();
   const [trends, setTrends] = useState<GroundedTrend[]>([]);
   const [loadingTrends, setLoadingTrends] = useState(false);
+
+  const sortedArticles = [...data.articles].sort(sortArticlesLatest);
 
   const handleScanTrends = async () => {
     setLoadingTrends(true);
@@ -590,7 +620,7 @@ const BlogView = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {data.articles.map(a => (
+        {sortedArticles.map(a => (
           <Link key={a.id} to={`/blog/${a.slug}`} className="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all flex flex-col">
             <div className="h-72 overflow-hidden relative">
               <img src={a.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />

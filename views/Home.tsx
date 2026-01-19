@@ -5,6 +5,17 @@ import { getCMSData } from '../services/storage.ts';
 import { CheckCircle, ArrowRight, Zap, Star, ShoppingBag, Layers, Box } from 'lucide-react';
 import { AISearch } from '../components/AISearch.tsx';
 import { ProductCard } from '../App.tsx';
+import { Product, Article } from '../types.ts';
+
+/**
+ * Global sorting utility for Knowledge Nodes
+ */
+const sortArticlesLatest = (a: Article, b: Article) => {
+  const timeA = new Date(a.createdAt).getTime();
+  const timeB = new Date(b.createdAt).getTime();
+  if (timeB !== timeA) return timeB - timeA;
+  return b.id.localeCompare(a.id);
+};
 
 const PurchaseNotification: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -72,14 +83,20 @@ const PurchaseNotification: React.FC = () => {
 
 export const Home: React.FC = () => {
   const data = getCMSData();
-  // Show 6 featured articles
-  const featuredArticles = data.articles.filter(a => a.featured || a.id.startsWith('at-')).slice(0, 6);
   
-  const sortedProducts = [...data.products].sort((a, b) => 
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  // Chronological sort for Articles to show the freshest intelligence
+  const featuredArticles = [...data.articles]
+    .sort(sortArticlesLatest)
+    .slice(0, 6);
   
-  // Show exactly 8 products in a grid
+  // Chronological sort for Products
+  const sortedProducts = [...data.products].sort((a: Product, b: Product) => {
+    const timeA = new Date(a.createdAt).getTime();
+    const timeB = new Date(b.createdAt).getTime();
+    if (timeB !== timeA) return timeB - timeA;
+    return b.id.localeCompare(a.id, undefined, { numeric: true });
+  });
+  
   const latestProducts = sortedProducts.slice(0, 8); 
   const totalProductsCount = data.products.length;
 
@@ -125,7 +142,7 @@ export const Home: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/marketplace" className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200">
-              Explore {totalProductsCount}+ Income Guides
+              Explore {totalProductsCount} Elite Blueprints
             </Link>
             <Link to="/blog" className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-xl font-bold text-lg hover:border-gray-300">
               Start Free Learning
@@ -172,10 +189,10 @@ export const Home: React.FC = () => {
               <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-black uppercase tracking-widest flex items-center">
                 <Layers className="h-3 w-3 mr-1" /> PRO LIBRARY
               </span>
-              <span className="text-blue-600 font-bold text-sm">Recently Added</span>
+              <span className="text-blue-600 font-bold text-sm">Elite Systems</span>
             </div>
             <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tight">Premium Blueprints</h2>
-            <p className="text-gray-500 mt-2 text-lg font-medium italic">Accelerator programs to cut your learning curve in half.</p>
+            <p className="text-gray-500 mt-2 text-lg font-medium italic">Standardized architectures to cut your learning curve in half.</p>
           </div>
           
           <div className="bg-gray-900 text-white p-6 rounded-3xl shadow-xl flex items-center space-x-6 relative group overflow-hidden">
@@ -194,7 +211,7 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {latestProducts.map((product) => (
             <ProductCard key={product.id} p={product} />
           ))}
@@ -203,7 +220,7 @@ export const Home: React.FC = () => {
         <div className="mt-12 text-center">
            <Link to="/marketplace" className="inline-flex items-center px-10 py-6 bg-gray-900 text-white hover:bg-blue-700 rounded-[2rem] font-bold transition-all group shadow-2xl">
               <Box className="h-5 w-5 mr-3 text-blue-400" />
-              Discover {Math.max(0, totalProductsCount - 8)} More Strategies in the Premium Vault
+              Discover All Unique Strategies in the Premium Vault
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
            </Link>
         </div>
